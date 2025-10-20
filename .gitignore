@@ -1,0 +1,27 @@
+# JetBrains IDE config
+.idea/
+
+# Node modules (frontend dependencies)
+frontend/node_modules/
+
+# Lock files (optional to ignore; some teams keep package-lock.json)
+frontend/package-lock.json
+frontend/yarn.lock
+
+# Build output
+frontend/dist/
+backend/vendor/   # if you ever install PHP packages manually
+
+# Logs and temporary files
+*.log
+*.tmp
+*.swp
+*.DS_Store
+
+# Docker
+*.env                # if you store credentials locally
+docker-compose.override.yml
+
+# OS-specific files
+Thumbs.db
+Desktop.ini
