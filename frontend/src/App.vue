@@ -18,18 +18,16 @@ import csvContainer from './components/csv/csvContainer.vue'
 </script>
 
 <style lang="scss" scoped>
-$app-bg: #ffffff;          // white background
-$primary-color: #6C63FF;   // example accent color
-$text-color: #333;
+
+
 
 .app {
   min-height: 100vh;
-  background-color: $app-bg;
-  color: $text-color;
+  background-color: white;
   font-family: 'Helvetica Neue', Arial, sans-serif;
 
   header {
-    background-color: $primary-color;
+    background-color: #6C63FF;
     color: white;
     text-align: center;
     padding: 1rem;
@@ -39,23 +37,27 @@ $text-color: #333;
       font-size: 1.8rem;
     }
   }
-
-  main {
-    max-width: 900px;
-    margin: 2rem auto;
-    padding: 1rem;
-    text-align: center;
+  main{
+    .csvUpload{
+      width: 100%;
+      padding: 5vh 0;
+      height: 40vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
   }
+
 }
 
-/* Responsive tweaks */
-@media (max-width: 600px) {
-  header h1 {
-    font-size: 1.4rem;
-  }
+h2{
+  color: #6C63FF;
+}
 
-  main {
-    padding: 0.5rem;
-  }
+@media (max-width: 600px) {
+
+
+
 }
 </style>

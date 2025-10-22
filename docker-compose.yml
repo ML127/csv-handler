@@ -8,6 +8,8 @@ services:
       - "8888:80"       # Non-standard host port for PHP/Apache
     volumes:
       - ./backend/src:/var/www/html
+    depends_on:
+      - db
 
   db:
     image: mysql:8.0
@@ -19,6 +21,7 @@ services:
       - "3307:3306"     # Non-standard host port for MySQL
     volumes:
       - db_data:/var/lib/mysql
+      - ./mysql-init:/docker-entrypoint-initdb.d  # auto-run table creation scripts
 
   frontend:
     image: node:20
@@ -29,6 +32,8 @@ services:
     ports:
       - "5173:5173"     # Non-standard host port for Vue dev server
     command: sh -c "npm install && npm run dev"
+    depends_on:
+      - backend
 
 volumes:
   db_data:
