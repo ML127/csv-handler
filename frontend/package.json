@@ -8,11 +8,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "vue": "^3.3.0",
-    "axios": "^1.4.0"
+    "axios": "^1.4.0",
+    "vue": "^3.3.0"
   },
   "devDependencies": {
-    "vite": "^4.5.0",
-    "@vitejs/plugin-vue": "^4.1.0"
+    "@vitejs/plugin-vue": "^4.6.2",
+    "sass": "^1.93.2",
+    "vite": "^4.5.0"
   }
 }

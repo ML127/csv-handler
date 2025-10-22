@@ -1,10 +1,6 @@
 
 
-const App = {
-    template: `<div>CSV Handler Frontend is running!</div>`
-};
+import { createApp } from 'vue'
+import App from './App.vue'
 
-const app = document.getElementById('app');
-app.innerHTML = `
-  <h1>CSV Handler Frontend is running!</h1>
-`;
+createApp(App).mount('#app')
