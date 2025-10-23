@@ -1,5 +1,5 @@
-<script setup lang="js">
-import { ref, onMounted } from 'vue'
+<script setup>
+import { ref, onMounted, defineExpose } from 'vue'
 import employeesEntry from './employeesEntry.vue'
 
 const employees = ref([])
@@ -8,34 +8,22 @@ const fetchEmployees = async () => {
   try {
     const res = await fetch('http://localhost:8888/api/employees')
     const data = await res.json()
-
     if (data.success && Array.isArray(data.employees)) {
       employees.value = data.employees
-    } else {
-      console.warn('No employees found or invalid response:', data)
     }
   } catch (err) {
     console.error('Failed to fetch employees:', err)
   }
 }
 
-
-const handleEmailUpdated = ({ id, email }) => {
-  const emp = employees.value.find(e => e.id === id)
-  if (emp) emp.email = email
-}
-
 onMounted(fetchEmployees)
+defineExpose({ fetchEmployees })
 </script>
 
 <template>
   <section class="employeesContainer">
     <h2>Employees</h2>
-
-    <div v-if="employees.length === 0" class="empty-state">
-      <p>No employees found yet. Upload a CSV file to get started!</p>
-    </div>
-
+    <div v-if="!employees.length" class="empty">No employees yet.</div>
     <div v-else class="employeesGrid">
       <employeesEntry
           v-for="emp in employees"
@@ -45,7 +33,6 @@ onMounted(fetchEmployees)
           :email="emp.email"
           :company="emp.company"
           :salary="emp.salary"
-          @email-updated="handleEmailUpdated"
       />
     </div>
   </section>
@@ -65,7 +52,9 @@ onMounted(fetchEmployees)
     color: #6c63ff;
     align-self: flex-start;
     @media (orientation: portrait){
-      margin-left: 2rem;
+      margin-left: 0;
+      width: 100%;
+      text-align: center;
     }
   }
 

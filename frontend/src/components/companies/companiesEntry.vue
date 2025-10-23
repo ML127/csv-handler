@@ -1,19 +1,18 @@
-<script setup lang="js">
+<script setup>
 const props = defineProps({
   company: String,
-  avgSalary: [Number, String]
+  average: [String, Number]
 })
 </script>
 
 <template>
-  <div class="company-card">
-    <h3 class="company-name">{{ company }}</h3>
-    <p class="avg-salary">Average Salary: £{{ avgSalary }}</p>
+  <div class="companyCard">
+    <span class="company">{{ company }}</span>
+    <span class="average">£{{ average }}</span>
   </div>
-</template>
-
+  </template>
 <style scoped lang="scss">
-.company-card {
+.companyCard {
   background: white;
   border-radius: 2rem;
   padding: 1.5rem 2rem;
@@ -25,14 +24,14 @@ const props = defineProps({
     padding: 0.5rem 2rem;
     width: 80%;
   }
-  .company-name {
+  .company{
     font-size: 1.4rem;
     color: #6c63ff;
     font-weight: bold;
     margin-bottom: 0.5rem;
   }
 
-  .avg-salary {
+  .average {
     font-size: 1.1rem;
     font-weight: 500;
     color: #333;

@@ -1,19 +1,21 @@
 <script setup lang="js">
-import csVForm from './csVForm.vue';
+import csVForm from './csVForm.vue'
+
+const emit = defineEmits(['csv-uploaded'])
+
+const handleUploadSuccess = () => {
+  emit('csv-uploaded')
+}
 </script>
 
 <template>
-
-  <csVForm></csVForm>
-
-
+  <csVForm @upload-success="handleUploadSuccess" />
 </template>
 
 <style scoped lang="scss">
-.csvMainContainer{
+.csvMainContainer {
   width: 100%;
   height: 40vh;
   position: relative;
-
 }
 </style>

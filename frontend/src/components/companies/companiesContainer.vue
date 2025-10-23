@@ -1,59 +1,74 @@
-<script setup lang="js">
-import { ref, onMounted } from 'vue'
+<script setup>
+import { ref, onMounted, defineExpose } from 'vue'
 import companiesEntry from './companiesEntry.vue'
 
-const companies = ref([])
+const averages = ref([])
 
 const fetchCompanyAverages = async () => {
   try {
     const res = await fetch('http://localhost:8888/api/companies/averages')
     const data = await res.json()
 
+    // backend returns { success, averages: [...] }
     if (data.success && Array.isArray(data.averages)) {
-      companies.value = data.averages
+      averages.value = data.averages
     } else {
-      console.warn('Invalid response:', data)
+      averages.value = []
+      console.warn('Unexpected averages response:', data)
     }
   } catch (err) {
-    console.error('Failed to fetch company averages:', err)
+    console.error('Failed to fetch averages:', err)
   }
 }
+
+// expose to App.vue so it can refresh after CSV upload
+defineExpose({ fetchCompanyAverages })
 
 onMounted(fetchCompanyAverages)
 </script>
 
 <template>
-  <section class="employeesContainer">
-    <h2>Companies Averages</h2>
+  <section class="companiesContainer">
+    <h2>Company Average Salaries</h2>
 
-    <div v-if="companies.length === 0" class="empty-state">
-      <p>No company data found yet. Upload a CSV to generate averages!</p>
+    <div v-if="!averages.length" class="empty">
+      <p>No data yet. Upload a CSV file to populate company averages.</p>
     </div>
 
     <div v-else class="companiesGrid">
       <companiesEntry
-          v-for="(comp, index) in companies"
-          :key="index"
-          :company="comp.company"
-          :avg-salary="comp.avg_salary"
+          v-for="(company, idx) in averages"
+          :key="idx"
+          :company="company.company"
+          :average="company.avg_salary"
       />
     </div>
   </section>
 </template>
 
 <style scoped lang="scss">
-.employeesContainer {
-  min-height: 100vh;
+.companiesContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
   width: 100%;
+  min-height: 50vh;
 
   h2 {
-    margin-left: 6rem;
     color: #6c63ff;
     align-self: flex-start;
+    margin-left: 6rem;
+    @media(orientation: portrait){
+      margin-left: 0;
+      width: 100%;
+      text-align: center;
+    }
+  }
+
+  .empty {
+    color: #777;
+    padding: 2rem;
   }
 
   .companiesGrid {
@@ -67,16 +82,8 @@ onMounted(fetchCompanyAverages)
 
     @media (orientation: portrait) {
       grid-template-columns: repeat(1, 1fr);
-      width: 100%;
-      border-radius: unset;
-      place-items: center;
+      width: 90%;
     }
-  }
-
-  .empty-state {
-    margin-top: 3rem;
-    text-align: center;
-    color: #666;
   }
 }
 </style>

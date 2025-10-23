@@ -3,8 +3,9 @@ import { ref } from 'vue'
 import ArrowBottomPurple from '../../microComponents/arrowBottomPurple.vue'
 
 const file = ref(null)
-const result = ref(null)   // stores backend response
-const errors = ref([])     // stores validation errors
+const result = ref(null)
+const errors = ref([])
+const emit = defineEmits(['upload-success'])
 
 function generateUploadMessage(data) {
   const inserted = data.employees_inserted ?? 0
@@ -39,10 +40,10 @@ const uploadCsv = async () => {
     })
 
     const data = await response.json()
-    console.log('Upload response:', data)
-
     result.value = data
     errors.value = data.errors ?? []
+
+    if (data.success) emit('upload-success') // 🔥 trigger refresh
   } catch (err) {
     console.error('Upload failed:', err)
     result.value = { error: 'Upload failed — check backend logs.' }
@@ -102,21 +103,14 @@ const handleFileChange = (e) => {
 .uploadForm {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
   gap: 2.5vh;
-  position: relative;
 
-  @media (orientation: portrait){
-    position: relative;
-    right: 0;
-  }
   .uploadContainer {
     display: flex;
-    gap: 2vh;
     flex-direction: column;
+    gap: 2vh;
+
     label {
-      align-self: flex-start;
       font-size: 1rem;
       font-weight: bold;
     }
@@ -129,13 +123,13 @@ const handleFileChange = (e) => {
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative;
     left: 4rem;
+    position: relative;
   }
 
   button {
-    height: auto;
     font-size: 1.1rem;
+    width: fit-content;
   }
 
   h2 {
@@ -149,20 +143,7 @@ const handleFileChange = (e) => {
   background: #f9f9ff;
   border: 1px solid #ddd;
   border-radius: 8px;
-  position: absolute;
-  right: 10rem;
-  width: 24rem;
-  @media (orientation: portrait){
-    position: absolute;
-    top: 30rem;
-    left: 1.5rem;
-    width: 80vw;
-  }
-  p {
-    margin: 0.3rem 0;
-  }
 }
-
 .error-box {
   margin-top: 1rem;
   padding: 1rem;
@@ -170,13 +151,7 @@ const handleFileChange = (e) => {
   border-radius: 8px;
   background: #fff1f0;
   color: #a8071a;
-
-  ul {
-    margin: 0.5rem 0 0;
-    padding-left: 1.5rem;
-  }
 }
-
 .error-message {
   color: #b71c1c;
 }
