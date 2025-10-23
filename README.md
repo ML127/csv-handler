@@ -6,7 +6,9 @@ Built with Vue 3 + Vite (frontend), PHP + MySQL (backend), and Docker Compose.
 
 # 1. Build and start all containers
 
+```
 docker-compose up --build
+```
 
 Then open:
 
@@ -23,11 +25,12 @@ backend port "8888:80"
 
 # 3. If you need to rebuild docker
 
+```
 docker-compose down -v
 docker-compose up --build
+```
 
-
-Future Improvements
+# Future Improvements
 
 - Implement user login / authorisation.
 - Pagination for the employee list.
