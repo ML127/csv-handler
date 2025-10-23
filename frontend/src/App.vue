@@ -1,13 +1,18 @@
 <template>
   <div class="app">
     <header>
-      <h1>CSV Handler</h1>
+      <h1>CSV Upload Handler</h1>
     </header>
     <main>
       <section class="csvUpload">
         <csvContainer></csvContainer>
       </section>
-      <!-- Components like UploadCsv and EmployeeList can go here -->
+      <section class="employeesMainContainer">
+        <employeesContainer></employeesContainer>
+      </section>
+      <section class="companiesMainContainer">
+        <companiesContainer></companiesContainer>
+      </section>
     </main>
   </div>
 </template>
@@ -15,6 +20,8 @@
 
 <script setup>
 import csvContainer from './components/csv/csvContainer.vue'
+import employeesContainer from './components/employees/employeesContainer.vue'
+import companiesContainer from './components/companies/companiesContainer.vue'
 </script>
 
 <style lang="scss" scoped>
@@ -40,12 +47,36 @@ import csvContainer from './components/csv/csvContainer.vue'
   main{
     .csvUpload{
       width: 100%;
-      padding: 5vh 0;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 10vh 0;
       height: 40vh;
       display: flex;
+      max-width: 1400px;
       justify-content: center;
       align-items: center;
       position: relative;
+      @media(orientation: portrait){
+        align-items: flex-start;
+        height: 71vh;
+      }
+    }
+    .employeesMainContainer, .companiesMainContainer{
+      width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 10vh 0;
+      height: auto;
+      display: flex;
+      max-width: 1400px;
+      justify-content: center;
+      align-items: flex-start;
+      position: relative;
+    }
+    .companiesMainContainer{
+      @media(orientation: portrait){
+        padding-bottom: 0;
+      }
     }
   }
 

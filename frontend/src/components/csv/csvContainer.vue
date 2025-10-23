@@ -14,5 +14,6 @@ import csVForm from './csVForm.vue';
   width: 100%;
   height: 40vh;
   position: relative;
+
 }
 </style>
