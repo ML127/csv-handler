@@ -4,10 +4,10 @@ class Database {
     private string $db_name;
     private string $username;
     private string $password;
-    public PDO $conn;
+    private ?PDO $conn = null;
 
     public function __construct() {
-        // Read database credentials from environment variables docker
+        // Read from environment variables (set in docker-compose.yml)
         $this->host = getenv('PHP_DB_HOST') ?: 'db';
         $this->db_name = getenv('PHP_DB_NAME') ?: 'employees';
         $this->username = getenv('PHP_DB_USER') ?: 'root';
@@ -15,27 +15,19 @@ class Database {
     }
 
     public function connect(): PDO {
-        if (isset($this->conn)) {
-            return $this->conn;
-        }
-
         try {
-            $this->conn = new PDO(
-                "mysql:host={$this->host};dbname={$this->db_name};charset=utf8",
-                $this->username,
-                $this->password
-            );
+            $dsn = "mysql:host={$this->host};dbname={$this->db_name};charset=utf8mb4";
+            $this->conn = new PDO($dsn, $this->username, $this->password);
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            echo 'Connected successfully';
+
+            // Debug log to confirm
+            error_log("✅ Connected to database '{$this->db_name}' at host '{$this->host}'");
+            return $this->conn;
+
         } catch (PDOException $e) {
-            http_response_code(500);
-            echo json_encode([
-                'error' => 'Database connection failed.'
-            ]);
-            error_log('Database Connection Error: ' . $e->getMessage());
+            error_log("❌ Database Connection Error: " . $e->getMessage());
+            echo json_encode(['error' => 'Database connection failed.']);
             exit;
         }
-
-        return $this->conn;
     }
 }
