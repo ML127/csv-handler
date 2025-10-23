@@ -6,6 +6,8 @@ Built with Vue 3 + Vite (frontend), PHP + MySQL (backend), and Docker Compose.
 
 # 1. Build and start all containers
 
+Run in project root:
+
 ```
 docker-compose up --build
 ```
