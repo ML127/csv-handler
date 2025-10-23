@@ -1,6 +1,6 @@
 <script setup>
 import { ref, watch } from 'vue'
-
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 const emit = defineEmits(['email-updated'])
 
 const props = defineProps({
@@ -44,7 +44,7 @@ const updateEmail = async () => {
   }
 
   try {
-    const res = await fetch(`http://localhost:8888/api/employees/${props.id}`, {
+    const res = await fetch(`${apiBaseUrl}/employees/${props.id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: newEmail.value })

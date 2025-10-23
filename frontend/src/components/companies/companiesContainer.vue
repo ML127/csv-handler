@@ -1,12 +1,12 @@
 <script setup>
 import { ref, onMounted, defineExpose } from 'vue'
 import companiesEntry from './companiesEntry.vue'
-
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 const averages = ref([])
 
 const fetchCompanyAverages = async () => {
   try {
-    const res = await fetch('http://localhost:8888/api/companies/averages')
+    const res = await fetch(`${apiBaseUrl}/companies/averages`)
     const data = await res.json()
 
     // backend returns { success, averages: [...] }

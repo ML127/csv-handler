@@ -1,12 +1,12 @@
 <script setup lang="js">
 import { ref, onMounted, defineExpose } from 'vue'
 import employeesEntry from './employeesEntry.vue'
-
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 const employees = ref([])
 
 const fetchEmployees = async () => {
   try {
-    const res = await fetch('http://localhost:8888/api/employees')
+    const res = await fetch(`${apiBaseUrl}/employees`)
     const data = await res.json()
 
     if (data.success && Array.isArray(data.employees)) {

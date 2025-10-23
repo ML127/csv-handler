@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import ArrowBottomPurple from '../../microComponents/arrowBottomPurple.vue'
-
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 const file = ref(null)
 const result = ref(null)
 const errors = ref([])
@@ -38,7 +38,7 @@ const uploadCsv = async () => {
   formData.append('csvFile', file.value)
 
   try {
-    const response = await fetch('http://localhost:8888/api/employees', {
+    const response = await fetch(`${apiBaseUrl}/employees`, {
       method: 'POST',
       body: formData,
     })
