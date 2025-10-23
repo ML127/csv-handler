@@ -27,18 +27,18 @@ RUN echo '<VirtualHost *:80>\n\
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
 # Install and configure Xdebug
-RUN pecl install xdebug \
-    && docker-php-ext-enable xdebug \
-    && { \
-        echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)"; \
-        echo "xdebug.mode=debug,develop"; \
-        echo "xdebug.start_with_request=yes"; \
-        echo "xdebug.client_host=host.docker.internal"; \
-        echo "xdebug.client_port=9003"; \
-        echo "xdebug.idekey=PHPSTORM"; \
-        echo "xdebug.log_level=7"; \
-        echo "xdebug.log=/tmp/xdebug.log"; \
-    } > /usr/local/etc/php/conf.d/xdebug.ini
+#RUN pecl install xdebug \
+ #   && docker-php-ext-enable xdebug \
+#    && { \
+#        echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)"; \
+#        echo "xdebug.mode=debug,develop"; \
+#        echo "xdebug.start_with_request=yes"; \
+#        echo "xdebug.client_host=host.docker.internal"; \
+#        echo "xdebug.client_port=9003"; \
+#        echo "xdebug.idekey=PHPSTORM"; \
+#        echo "xdebug.log_level=7"; \
+#        echo "xdebug.log=/tmp/xdebug.log"; \
+#    } > /usr/local/etc/php/conf.d/xdebug.ini
 
 # Set working directory
 WORKDIR /var/www/html

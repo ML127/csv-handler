@@ -21,11 +21,11 @@ class Database {
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
             // Debug log to confirm
-            error_log("✅ Connected to database '{$this->db_name}' at host '{$this->host}'");
+            error_log("Connected to database '{$this->db_name}' at host '{$this->host}'");
             return $this->conn;
 
         } catch (PDOException $e) {
-            error_log("❌ Database Connection Error: " . $e->getMessage());
+            error_log("Database Connection Error: " . $e->getMessage());
             echo json_encode(['error' => 'Database connection failed.']);
             exit;
         }

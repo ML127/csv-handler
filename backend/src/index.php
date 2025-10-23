@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 $requestUri = $_SERVER['REQUEST_URI'] ?? '/';
 $requestPath = parse_url($requestUri, PHP_URL_PATH);
 
-
+// clean the request path
 $requestPath = preg_replace('#^/index\.php#', '', $requestPath);
 if ($requestPath === '') {
     $requestPath = '/';
@@ -20,6 +20,15 @@ if ($requestPath === '') {
 error_log("URI CHECK (cleaned): " . $requestPath);
 
 switch (true) {
+
+    // Root route — just show available endpoints
+    case $requestPath === '/':
+        header('Content-Type: application/json');
+        echo json_encode([
+            'message' => 'CSV Handler API — available endpoints: /api/employees, /api/companies/averages'
+        ]);
+        break;
+
     // POST /api/employees — CSV upload
     case $requestPath === '/api/employees' && $_SERVER['REQUEST_METHOD'] === 'POST':
         require_once __DIR__ . '/api/CsvUploadApi.php';
@@ -38,14 +47,16 @@ switch (true) {
         (new UpdateEmployeeApi())->handleUpdate((int)$matches[1]);
         break;
 
-    case '/api/companies/averages':
+    // GET /api/companies/averages — average salary per company
+    case $requestPath === '/api/companies/averages':
         require_once __DIR__ . '/api/GetAverageSalaryApi.php';
         (new GetAverageSalaryApi())->handleGet();
         break;
 
-
+    // fallback
     default:
         http_response_code(404);
+        header('Content-Type: application/json');
         echo json_encode([
             'error' => 'Endpoint not found',
             'uri' => $requestPath

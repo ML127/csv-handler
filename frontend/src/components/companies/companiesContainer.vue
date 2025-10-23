@@ -21,7 +21,6 @@ const fetchCompanyAverages = async () => {
   }
 }
 
-// expose to App.vue so it can refresh after CSV upload
 defineExpose({ fetchCompanyAverages })
 
 onMounted(fetchCompanyAverages)

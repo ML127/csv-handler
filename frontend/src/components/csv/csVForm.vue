@@ -10,23 +10,27 @@ const emit = defineEmits(['upload-success'])
 function generateUploadMessage(data) {
   const inserted = data.employees_inserted ?? 0
   const duplicates = data.duplicates_skipped ?? 0
-  const total = inserted + duplicates
+  const errors = data.errors?.length ?? 0
+
+  // total rows attempted = inserted + duplicates + invalid
+  const total = inserted + duplicates + errors
 
   switch (true) {
     case inserted === 0 && duplicates > 0:
       return `All ${duplicates} rows were duplicates — nothing inserted.`
     case inserted > 0 && duplicates > 0:
       return `${inserted}/${total} rows inserted — ${duplicates} duplicates skipped.`
-    case inserted > 0 && duplicates === 0:
+    case inserted > 0 && errors > 0:
+      return `${inserted}/${total} rows inserted — ${errors} invalid rows skipped.`
+    case inserted > 0 && duplicates === 0 && errors === 0:
       return `${inserted}/${total || inserted} rows inserted successfully!`
     default:
       return `No rows inserted. Check backend logs.`
   }
 }
-
 const uploadCsv = async () => {
   if (!file.value) {
-    alert('No file selected.')
+    console.log('no file selected');
     return
   }
 
@@ -43,7 +47,7 @@ const uploadCsv = async () => {
     result.value = data
     errors.value = data.errors ?? []
 
-    if (data.success) emit('upload-success') // 🔥 trigger refresh
+    if (data.success) emit('upload-success')
   } catch (err) {
     console.error('Upload failed:', err)
     result.value = { error: 'Upload failed — check backend logs.' }

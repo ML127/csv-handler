@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="js">
 import { ref, onMounted, defineExpose } from 'vue'
 import employeesEntry from './employeesEntry.vue'
 
@@ -8,22 +8,35 @@ const fetchEmployees = async () => {
   try {
     const res = await fetch('http://localhost:8888/api/employees')
     const data = await res.json()
+
     if (data.success && Array.isArray(data.employees)) {
       employees.value = data.employees
+    } else {
+      employees.value = []
     }
   } catch (err) {
     console.error('Failed to fetch employees:', err)
   }
 }
 
-onMounted(fetchEmployees)
+
+const handleEmailUpdated = ({ id, email }) => {
+  const emp = employees.value.find(e => e.id === id)
+  if (emp) emp.email = email
+}
+
 defineExpose({ fetchEmployees })
+onMounted(fetchEmployees)
 </script>
 
 <template>
   <section class="employeesContainer">
     <h2>Employees</h2>
-    <div v-if="!employees.length" class="empty">No employees yet.</div>
+
+    <div v-if="!employees.length" class="empty">
+      <p>No employees found yet. Upload a CSV file to get started!</p>
+    </div>
+
     <div v-else class="employeesGrid">
       <employeesEntry
           v-for="emp in employees"
@@ -33,10 +46,12 @@ defineExpose({ fetchEmployees })
           :email="emp.email"
           :company="emp.company"
           :salary="emp.salary"
+          @email-updated="handleEmailUpdated"
       />
     </div>
   </section>
 </template>
+
 
 <style scoped lang="scss">
 .employeesContainer {
