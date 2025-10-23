@@ -147,6 +147,10 @@ const handleFileChange = (e) => {
   background: #f9f9ff;
   border: 1px solid #ddd;
   border-radius: 8px;
+  @media (orientation: portrait){
+    position: absolute;
+    top: 36rem;
+  }
 }
 .error-box {
   margin-top: 1rem;

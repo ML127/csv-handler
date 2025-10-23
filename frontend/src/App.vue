@@ -84,6 +84,11 @@ const refreshData = async () => {
     .companiesMainContainer {
       padding-top: 0;
     }
+    .employeesMainContainer{
+      @media (orientation: portrait) {
+        padding: 20vh 0;
+      }
+    }
   }
 }
 
